@@ -1,0 +1,116 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+    font-family: sans-serif;
+    font-weight: normal;
+}
+
+body {
+    background: #A1B177;
+}
+  
+.calculator {
+    display: grid;
+    grid-template-columns: repeat(3, 6.25rem);
+    grid-template-rows: minmax(7.5rem, auto) repeat(6, 6.25rem);
+    justify-content: center;
+    align-content: center;
+
+    min-height: 100vh;
+
+    color: #FFFFFF;
+}
+  
+.calculator > button {
+    border: 0.0625rem solid white;
+    outline: none;
+    background-color: #171717;
+
+    font-size: 2rem;
+    color: inherit;
+
+    cursor: pointer;
+}
+  
+.calculator > button:hover {
+    background-color: #5A524F;
+}
+
+.calculator button[data-equals] {
+    background-color: #036FC4;
+}
+
+.calculator button[data-equals]:hover {
+    background-color: rgba(3, 111, 196, 0.6);
+}
+  
+.calculator__output {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    grid-column: 1 / -1;
+
+    background-color: #1F1F1F;
+    
+    padding: 0.625rem;
+
+    word-wrap: break-word;
+    word-break: break-all;
+}
+  
+.calculator__previous-operand {
+    font-size: 1.5rem;
+    color: rgba(#FFFFFF, 0.75);
+  }
+  
+.calculator__current-operand {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+}
+
+/* >= 400px */
+@media only screen and (min-width: 25rem) {
+    .calculator {
+        grid-template-columns: repeat(4, 6.25rem);
+    }
+
+    button[data-all-clear],
+    button[data-delete],
+    button[data-number="0"] {
+        grid-column: span 2;
+    }
+
+    button[data-equals] {
+        grid-row: 4 / -1;
+        grid-column: 4;
+    }
+}
+
+/* <= 299px */
+@media only screen and (max-width: 18.6875rem) {
+    .calculator {
+        display: none;
+    }
+
+    body::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        display: block;
+
+        content: "Sorry this site is not supported below 300 pixels width.";
+
+        text-align: center;
+    }
+}
