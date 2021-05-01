@@ -1,3 +1,5 @@
+const DEVIDE_ZERO_ERROR_MESSAGE = 'Cannot be divided by zero';
+
 class Calculator {
     possibleMathOperationSymbols = {
         'plus': '+',
@@ -5,6 +7,8 @@ class Calculator {
         'times': '*',
         'divide': '/',
     };
+    errorMessage = '';
+    hasError = false;
 
     constructor(previousOperandTextElement, currentOperandTextElement) {
         this.previousOperandTextElement = previousOperandTextElement;
@@ -63,6 +67,17 @@ class Calculator {
             return;
         }
 
+        const isTryingToDivideVyZero = parseFloat(this.currentOperand) === 0 && this.operation === this.possibleMathOperationSymbols.divide;
+        if (isTryingToDivideVyZero) {
+            this.currentOperand = '';
+            this.operation = null;
+            this.previousOperand = '';
+            this.hasError = true;
+            this.errorMessage = DEVIDE_ZERO_ERROR_MESSAGE;
+
+            return;
+        }
+
         let computation = null;
 
         switch (this.operation) {
@@ -72,8 +87,11 @@ class Calculator {
             case this.possibleMathOperationSymbols.divide: computation = previousOperand / currentOperand; break;
             default:
                 const possibleMathOperationSymbolsAsArray = Object.values(this.possibleMathOperationSymbols);
-                const errorMessage = `Invalid symbols.Allowed math operation symbols are: [ ${possibleMathOperationSymbolsAsArray.join(', ')} ]`;
-                console.error(errorMessage);
+                const errorMessage = `Invalid symbols.Allowed math operation symbols are: ${possibleMathOperationSymbolsAsArray.join(', ')}`;
+
+                this.hasError = true;
+                this.errorMessage = errorMessage;
+
                 return;
         }
 
@@ -105,6 +123,14 @@ class Calculator {
     }
 
     updateDisplay() {
+        if (this.hasError) {
+            this.currentOperandTextElement.innerText = this.errorMessage;
+            this.previousOperandTextElement.innerText = '';
+            this.hasError = false;
+
+            return;
+        }
+
         this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
 
         const previousOperandText = this.operation != null ?
